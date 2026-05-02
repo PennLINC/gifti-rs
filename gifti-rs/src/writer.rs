@@ -175,7 +175,13 @@ fn write_data_array(out: &mut String, da: &DataArray, indent: &str) -> Result<()
         write_coord_system(out, cs, &format!("{indent}   "));
     }
 
-    let payload = encode_payload(&da.data, da.encoding, endian, &da.array_index_order, &da.dims)?;
+    let payload = encode_payload(
+        &da.data,
+        da.encoding,
+        endian,
+        &da.array_index_order,
+        &da.dims,
+    )?;
     writeln!(out, "{indent}   <Data>{payload}</Data>").ok();
     writeln!(out, "{indent}</DataArray>").ok();
     Ok(())

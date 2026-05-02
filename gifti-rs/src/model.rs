@@ -12,9 +12,7 @@ pub type Meta = Vec<(String, String)>;
 
 /// Look up the first value for a metadata key, or `None`.
 pub fn meta_get<'a>(meta: &'a Meta, key: &str) -> Option<&'a str> {
-    meta.iter()
-        .find(|(k, _)| k == key)
-        .map(|(_, v)| v.as_str())
+    meta.iter().find(|(k, _)| k == key).map(|(_, v)| v.as_str())
 }
 
 /// Insert or replace the value for a metadata key.

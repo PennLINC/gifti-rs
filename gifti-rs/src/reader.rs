@@ -22,9 +22,8 @@ use crate::model::{
 /// Parse a GIFTI file at `path`.
 pub fn read(path: &Path) -> Result<GiftiImage> {
     let bytes = fs::read(path).map_err(|e| GiftiError::io(path, e))?;
-    let xml = std::str::from_utf8(&bytes).map_err(|e| {
-        GiftiError::fmt(format!("GIFTI file is not valid UTF-8: {e}"))
-    })?;
+    let xml = std::str::from_utf8(&bytes)
+        .map_err(|e| GiftiError::fmt(format!("GIFTI file is not valid UTF-8: {e}")))?;
     parse_str(xml)
 }
 
@@ -301,10 +300,7 @@ fn parse_dims(da: Node<'_, '_>) -> Result<Vec<usize>> {
 }
 
 fn decode_b64_payload(text: &str, encoding: Encoding) -> Result<Vec<u8>> {
-    let compact: String = text
-        .chars()
-        .filter(|c| !c.is_ascii_whitespace())
-        .collect();
+    let compact: String = text.chars().filter(|c| !c.is_ascii_whitespace()).collect();
     let raw = base64::engine::general_purpose::STANDARD.decode(compact.as_bytes())?;
     if !matches!(encoding, Encoding::GZipBase64Binary) {
         return Ok(raw);
@@ -404,13 +400,29 @@ fn decode_binary(
     Ok(match dtype {
         DataType::UInt8 => ArrayData::UInt8(bytes.to_vec()),
         DataType::Int8 => ArrayData::Int8(bytes.iter().map(|&b| b as i8).collect()),
-        DataType::UInt16 => ArrayData::UInt16(decode!(u16, 2, u16::from_le_bytes, u16::from_be_bytes)),
-        DataType::Int16 => ArrayData::Int16(decode!(i16, 2, i16::from_le_bytes, i16::from_be_bytes)),
-        DataType::UInt32 => ArrayData::UInt32(decode!(u32, 4, u32::from_le_bytes, u32::from_be_bytes)),
-        DataType::Int32 => ArrayData::Int32(decode!(i32, 4, i32::from_le_bytes, i32::from_be_bytes)),
-        DataType::UInt64 => ArrayData::UInt64(decode!(u64, 8, u64::from_le_bytes, u64::from_be_bytes)),
-        DataType::Int64 => ArrayData::Int64(decode!(i64, 8, i64::from_le_bytes, i64::from_be_bytes)),
-        DataType::Float32 => ArrayData::Float32(decode!(f32, 4, f32::from_le_bytes, f32::from_be_bytes)),
-        DataType::Float64 => ArrayData::Float64(decode!(f64, 8, f64::from_le_bytes, f64::from_be_bytes)),
+        DataType::UInt16 => {
+            ArrayData::UInt16(decode!(u16, 2, u16::from_le_bytes, u16::from_be_bytes))
+        }
+        DataType::Int16 => {
+            ArrayData::Int16(decode!(i16, 2, i16::from_le_bytes, i16::from_be_bytes))
+        }
+        DataType::UInt32 => {
+            ArrayData::UInt32(decode!(u32, 4, u32::from_le_bytes, u32::from_be_bytes))
+        }
+        DataType::Int32 => {
+            ArrayData::Int32(decode!(i32, 4, i32::from_le_bytes, i32::from_be_bytes))
+        }
+        DataType::UInt64 => {
+            ArrayData::UInt64(decode!(u64, 8, u64::from_le_bytes, u64::from_be_bytes))
+        }
+        DataType::Int64 => {
+            ArrayData::Int64(decode!(i64, 8, i64::from_le_bytes, i64::from_be_bytes))
+        }
+        DataType::Float32 => {
+            ArrayData::Float32(decode!(f32, 4, f32::from_le_bytes, f32::from_be_bytes))
+        }
+        DataType::Float64 => {
+            ArrayData::Float64(decode!(f64, 8, f64::from_le_bytes, f64::from_be_bytes))
+        }
     })
 }

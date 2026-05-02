@@ -87,10 +87,9 @@ fn round_trip_in_memory() {
     } else {
         panic!("expected Float32 POINTSET");
     }
-    if let (ArrayData::Int32(o), ArrayData::Int32(p)) = (
-        &original.data_arrays[1].data,
-        &parsed.data_arrays[1].data,
-    ) {
+    if let (ArrayData::Int32(o), ArrayData::Int32(p)) =
+        (&original.data_arrays[1].data, &parsed.data_arrays[1].data)
+    {
         assert_eq!(o, p);
     } else {
         panic!("expected Int32 TRIANGLE");

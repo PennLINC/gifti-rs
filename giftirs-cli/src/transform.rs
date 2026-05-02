@@ -15,12 +15,8 @@ pub fn run(input: &Path, output: &Path, transform: &Path, overwrite: bool) -> Re
         ));
     }
 
-    let chain = itk_transforms_rs::read_itk(transform).map_err(|e| {
-        anyhow!(
-            "failed to read transform {}: {e}",
-            transform.display()
-        )
-    })?;
+    let chain = itk_transforms_rs::read_itk(transform)
+        .map_err(|e| anyhow!("failed to read transform {}: {e}", transform.display()))?;
 
     let mut img = gifti_rs::read(input)
         .with_context(|| format!("failed to read GIFTI file {}", input.display()))?;
