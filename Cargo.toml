@@ -17,4 +17,4 @@ clap = { version = "4", features = ["derive"] }
 flate2 = "1"
 roxmltree = "0.20"
 thiserror = "2"
-itk-transforms-rs = { path = "../itk-transforms-rs" }
+itk-transforms-rs = { version = "0.1.0", git = "https://github.com/PennLINC/itk-transforms-rs" }
