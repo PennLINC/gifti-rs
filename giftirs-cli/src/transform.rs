@@ -7,7 +7,13 @@ use gifti_rs::model::CoordSystem;
 use gifti_rs::{ArrayData, GiftiImage};
 use itk_transforms_rs::TransformChain;
 
-pub fn run(input: &Path, output: &Path, transform: &Path, overwrite: bool) -> Result<()> {
+pub fn run(
+    input: &Path,
+    output: &Path,
+    transform: &Path,
+    invert: bool,
+    overwrite: bool,
+) -> Result<()> {
     if output.exists() && !overwrite {
         return Err(anyhow!(
             "output file {} already exists (pass --overwrite to replace)",
@@ -15,8 +21,14 @@ pub fn run(input: &Path, output: &Path, transform: &Path, overwrite: bool) -> Re
         ));
     }
 
-    let chain = itk_transforms_rs::read_itk(transform)
+    let mut chain = itk_transforms_rs::read_itk(transform)
         .map_err(|e| anyhow!("failed to read transform {}: {e}", transform.display()))?;
+
+    if invert {
+        chain = chain
+            .invert()
+            .map_err(|e| anyhow!("--invert with non-invertible transform: {e}"))?;
+    }
 
     let mut img = gifti_rs::read(input)
         .with_context(|| format!("failed to read GIFTI file {}", input.display()))?;

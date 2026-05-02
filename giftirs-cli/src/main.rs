@@ -58,16 +58,14 @@ enum Command {
     ///
     /// FULL INVOCATION (warp T1w-space surface into MNI):
     ///   giftirs transform
-    ///   -i sub-01_hemi-L_pial.surf.gii
-    ///   -o sub-01_space-MNI152NLin6Asym_hemi-L_pial.surf.gii
-    ///   -t sub-01_from-MNI152NLin6Asym_to-T1w_xfm.h5
+    ///   sub-01_hemi-L_pial.surf.gii
+    ///   sub-01_space-MNI152NLin6Asym_hemi-L_pial.surf.gii
+    ///   --transform sub-01_from-MNI152NLin6Asym_to-T1w_xfm.h5
     Transform {
         /// Input GIFTI surface (`.gii`), e.g. `sub-01_hemi-L_pial.surf.gii`.
-        #[arg(short = 'i', long = "input")]
         input: PathBuf,
         /// Output GIFTI surface (`.gii`), e.g.
         /// `sub-01_space-MNI152NLin6Asym_hemi-L_pial.surf.gii`.
-        #[arg(short = 'o', long = "output")]
         output: PathBuf,
         /// ANTs/ITK transform: `Composite.h5` (warp + affines), Insight
         /// Transform File V1.0 (`.txt`, affine-only), or ITK MATLAB
@@ -78,6 +76,11 @@ enum Command {
         /// the description above).
         #[arg(short = 't', long = "transform")]
         transform: PathBuf,
+        /// Invert the transform before applying. Only valid for affine-only
+        /// transforms (`.txt`, `.mat`, or affine-only `.h5`); chains
+        /// containing a displacement field cannot be numerically inverted.
+        #[arg(long)]
+        invert: bool,
         /// Replace the output file if it exists.
         #[arg(long)]
         overwrite: bool,
@@ -92,8 +95,9 @@ fn main() -> ExitCode {
             input,
             output,
             transform,
+            invert,
             overwrite,
-        } => transform::run(&input, &output, &transform, overwrite),
+        } => transform::run(&input, &output, &transform, invert, overwrite),
     };
     match result {
         Ok(()) => ExitCode::SUCCESS,

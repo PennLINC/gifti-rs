@@ -26,7 +26,7 @@ label tables, coordinate-system records, and all non-pointset data arrays.
 
 ```sh
 giftirs info lh.pial.surf.gii
-giftirs transform -i lh.pial.surf.gii -o lh.pial.warped.surf.gii \
+giftirs transform lh.pial.surf.gii lh.pial.warped.surf.gii \
     --transform InverseComposite.h5
 ```
 
@@ -66,9 +66,9 @@ A → B — which lives in the opposite-named file `from-B_to-A_xfm.h5`.
 
 ```bash
 giftirs transform \
-    -i sub-01_hemi-L_pial.surf.gii \
-    -o sub-01_space-MNI152NLin6Asym_hemi-L_pial.surf.gii \
-    -t sub-01_from-MNI152NLin6Asym_to-T1w_xfm.h5
+    sub-01_hemi-L_pial.surf.gii \
+    sub-01_space-MNI152NLin6Asym_hemi-L_pial.surf.gii \
+    --transform sub-01_from-MNI152NLin6Asym_to-T1w_xfm.h5
 ```
 
 ### FreeSurfer C_RAS handling
