@@ -1,0 +1,19 @@
+[package]
+name = "giftirs-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Command-line tool (giftirs) for inspecting GIFTI files and applying ANTs transforms to surface vertex coordinates."
+
+[[bin]]
+name = "giftirs"
+path = "src/main.rs"
+
+[dependencies]
+gifti-rs = { path = "../gifti-rs" }
+itk-transforms-rs = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }

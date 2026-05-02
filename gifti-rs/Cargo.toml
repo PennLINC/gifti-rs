@@ -1,0 +1,16 @@
+[package]
+name = "gifti-rs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Pure-Rust reader and writer for GIFTI surface and shape files (.gii)."
+readme = "../README.md"
+
+[dependencies]
+base64 = { workspace = true }
+flate2 = { workspace = true }
+roxmltree = { workspace = true }
+thiserror = { workspace = true }

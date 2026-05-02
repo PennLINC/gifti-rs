@@ -1,0 +1,20 @@
+[workspace]
+resolver = "2"
+members = ["gifti-rs", "giftirs-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["Matt Cieslak <mattcieslak@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/mattcieslak/gifti-rs"
+
+[workspace.dependencies]
+anyhow = "1"
+base64 = "0.22"
+clap = { version = "4", features = ["derive"] }
+flate2 = "1"
+roxmltree = "0.20"
+thiserror = "2"
+itk-transforms-rs = { path = "../itk-transforms-rs" }
